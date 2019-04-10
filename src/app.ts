@@ -6,6 +6,7 @@ import {
     WebhookEvent,
 } from '@line/bot-sdk';
 import Express, { Request, Response } from 'express';
+import PgClient from '@/dbClient';
 
 const clientConfig: ClientConfig = {
     channelAccessToken: process.env.LINE_CHANNEL_ACCESS_TOKEN || '',
@@ -19,6 +20,7 @@ const botClient = new Client(clientConfig);
 const botMiddleware = middleware(middlewareConfig);
 
 const app = Express();
+PgClient.connect();
 
 app.get('/', (request: Request, response: Response) => {
     return response.status(200).send({text: 'Hello world.'});
