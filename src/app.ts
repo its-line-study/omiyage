@@ -20,9 +20,12 @@ const botClient = new Client(clientConfig);
 const botMiddleware = middleware(middlewareConfig);
 
 const app = Express();
-PgClient.connect();
 
-app.get('/', (request: Request, response: Response) => {
+app.get('/', async (request: Request, response: Response) => {
+    PgClient.connect();
+    const res = await PgClient.query('SELECT * from test;');
+    console.log(res.rows);
+    PgClient.end();
     return response.status(200).send({text: 'Hello world.'});
 });
 
