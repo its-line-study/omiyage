@@ -6,7 +6,8 @@ import {
     WebhookEvent,
 } from '@line/bot-sdk';
 import Express, { Request, Response } from 'express';
-import PgClient from '@/dbClient';
+const pg = require('pg');
+const databaseInfo = {connectionString: process.env.DATABASE_URL, ssh: true}
 
 const clientConfig: ClientConfig = {
     channelAccessToken: process.env.LINE_CHANNEL_ACCESS_TOKEN || '',
@@ -22,10 +23,11 @@ const botMiddleware = middleware(middlewareConfig);
 const app = Express();
 
 app.get('/', async (request: Request, response: Response) => {
-    PgClient.connect();
-    const res = await PgClient.query('SELECT * from test;');
+    const client = new pg.Client(databaseInfo);
+    client.connect();
+    const res = await client.query('SELECT * from test;');
     console.log(res.rows);
-    PgClient.end();
+    client.end();
     return response.status(200).send({text: 'Hello world.'});
 });
 
