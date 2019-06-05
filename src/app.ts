@@ -47,9 +47,11 @@ function handleEvent(event: WebhookEvent): Promise<any> {
         return Promise.resolve(null);
     }
 
+    const message = event.message.text === '1' ? 'A' : 'B';
+
     return botClient.replyMessage(event.replyToken, {
         type: 'text',
-        text: event.message.text,
+        text: message,
     });
 }
 
