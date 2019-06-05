@@ -42,16 +42,22 @@ app.post('/webhook', botMiddleware, (request: Request, response: Response) => {
         });
 });
 
-function handleEvent(event: WebhookEvent): Promise<any> {
+async function handleEvent(event: WebhookEvent): Promise<any> {
     if (event.type !== 'message' || event.message.type !== 'text') {
         return Promise.resolve(null);
     }
 
-    const message = event.message.text === '1' ? 'A' : 'B';
+    // const message = event.message.text === '1' ? 'A' : 'B';
+
+    const client = new pg.Client(databaseInfo);
+    client.connect();
+    const res = await client.query(`INSERT INTO omiyage (name, registered_user_id) VALUES (${event.message.text}, ${event.source.userId});`);
+    console.log(res.rows);
+    client.end();
 
     return botClient.replyMessage(event.replyToken, {
         type: 'text',
-        text: message,
+        text: 'ok',
     });
 }
 
