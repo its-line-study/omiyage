@@ -51,7 +51,7 @@ async function handleEvent(event: WebhookEvent): Promise<any> {
 
     const client = new pg.Client(databaseInfo);
     client.connect();
-    const res = await client.query(`INSERT INTO omiyage (name, registered_user_id) VALUES (${event.message.text}, ${event.source.userId});`);
+    const res = await client.query(`INSERT INTO omiyage (name, registered_user_id) VALUES ('${event.message.text}', '${event.source.userId}');`);
     console.log(res.rows);
     client.end();
 
