@@ -49,6 +49,9 @@ async function handleEvent(event: WebhookEvent): Promise<any> {
 
     // const message = event.message.text === '1' ? 'A' : 'B';
 
+    /**
+     * TODO DBアクセスは別ファイルに分けたい
+     */
     const client = new pg.Client(databaseInfo);
     client.connect();
     const res = await client.query(`INSERT INTO omiyage (name, registered_user_id) VALUES ('${event.message.text}', '${event.source.userId}');`);
