@@ -6,6 +6,7 @@ import {
     WebhookEvent,
 } from '@line/bot-sdk';
 import Express, { Request, Response } from 'express';
+import Service from './service.ts';
 const pg = require('pg');
 const databaseInfo = {connectionString: process.env.DATABASE_URL, ssh: true}
 
@@ -21,6 +22,7 @@ const botClient = new Client(clientConfig);
 const botMiddleware = middleware(middlewareConfig);
 
 const app = Express();
+const service = new Service();
 
 app.get('/', async (request: Request, response: Response) => {
     const client = new pg.Client(databaseInfo);
@@ -50,18 +52,15 @@ async function handleEvent(event: WebhookEvent): Promise<any> {
     // const message = event.message.text === '1' ? 'A' : 'B';
 
     /**
+     * TODO イベントの判定を別に
      * TODO DBアクセスは別ファイルに分けたい
+     * TODO ロジック
      */
-    const client = new pg.Client(databaseInfo);
-    client.connect();
-    const res = await client.query(`INSERT INTO omiyage (name, registered_user_id) VALUES ('${event.message.text}', '${event.source.userId}');`);
-    console.log(res.rows);
-    client.end();
 
-    return botClient.replyMessage(event.replyToken, {
-        type: 'text',
-        text: 'ok',
-    });
+    return botClient.replyMessage(
+        event.replyToken,
+        service.hoge(event)
+    );
 }
 
 export default app;
