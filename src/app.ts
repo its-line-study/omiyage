@@ -59,7 +59,7 @@ async function handleEvent(event: WebhookEvent): Promise<any> {
 
     return botClient.replyMessage(
         event.replyToken,
-        service.hoge(event)
+        await service.hoge(event)
     );
 }
 
