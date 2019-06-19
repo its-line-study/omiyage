@@ -2,7 +2,7 @@ const pg = require('pg');
 const databaseInfo = {connectionString: process.env.DATABASE_URL, ssh: true}
 
 export default class Service {
-    async function hoge(messageEvent: MessageEvent): Types.Message {
+    async function hoge(messageEvent: MessageEvent): Promise<Types.Message> {
         const client = new pg.Client(databaseInfo);
         client.connect();
         const res = await client.query(`INSERT INTO omiyage (name, registered_user_id) VALUES ('${event.message.text}', '${event.source.userId}');`);
