@@ -6,7 +6,7 @@ import {
     WebhookEvent,
 } from '@line/bot-sdk';
 import Express, { Request, Response } from 'express';
-import Service from './service.ts';
+import Service from './service';
 const pg = require('pg');
 const databaseInfo = {connectionString: process.env.DATABASE_URL, ssh: true}
 
@@ -59,7 +59,7 @@ async function handleEvent(event: WebhookEvent): Promise<any> {
 
     return botClient.replyMessage(
         event.replyToken,
-        await service.hoge(event)
+        await service.hoge(event.message, event.source)
     );
 }
 
