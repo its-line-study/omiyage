@@ -1,3 +1,6 @@
+const pg = require('pg');
+const databaseInfo = {connectionString: process.env.DATABASE_URL, ssh: true}
+
 export default class Service {
     function hoge(messageEvent: MessageEvent): Types.Message {
         const client = new pg.Client(databaseInfo);
