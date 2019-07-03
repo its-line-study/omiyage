@@ -7,7 +7,7 @@ import {
 } from '@line/bot-sdk';
 import Express, { Request, Response } from 'express';
 import Service from './service';
-const pg = require('pg');
+import pg from 'pg';
 const databaseInfo = {connectionString: process.env.DATABASE_URL, ssh: true}
 
 const clientConfig: ClientConfig = {
