@@ -10,7 +10,7 @@ export default class Service {
         const result = await query(`INSERT INTO omiyage (name, registered_user_id) VALUES ('${message.text}', '${source.userId}');`);
         return {
             type: 'text',
-            text: 'ok' + result,
+            text: 'ok' + result.rows[0],
         }
     }
 }
