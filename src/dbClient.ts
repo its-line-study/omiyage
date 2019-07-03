@@ -1,7 +1,7 @@
 import pg from 'pg';
 const databaseInfo = {connectionString: process.env.DATABASE_URL, ssh: true}
 
-export default async function query(query: string) {
+export default async function query(query: string): Promise<any> {
     const client = new pg.Client(databaseInfo);
     client.connect();
     const res = await client.query(query);
