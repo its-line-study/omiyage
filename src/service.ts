@@ -6,11 +6,18 @@ import {
 import query from './dbClient';
 
 export default class Service {
-    async hoge(message: TextEventMessage, source: EventSource): Promise<Message> {
+    async select(source: EventSource): Promise<Message> {
+        const result = await query(`SELECT text FROM omiyage WHERE registered_user_id = ${source.userId}`);
+        return {
+            type: 'text',
+            text: result.rows.join('\n')
+        }
+    }
+    async insert(message: TextEventMessage, source: EventSource): Promise<Message> {
         const result = await query(`INSERT INTO omiyage (name, registered_user_id) VALUES ('${message.text}', '${source.userId}');`);
         return {
             type: 'text',
-            text: `oid:${result.oid}, command:${result.command}, fields:${result.fields}, rowCount:${result.rowCount}, rows:${result.rows}`
+            text: `ok, ${result.rowCount} rows inserted!`
         }
     }
 }

@@ -1,4 +1,5 @@
 import {
+    Message,
     Client,
     ClientConfig,
     middleware,
@@ -56,12 +57,17 @@ async function handleEvent(event: WebhookEvent): Promise<any> {
      * TODO DBアクセスは別ファイルに分けたい
      * TODO ロジック
      */
+    var message: Promise<Message>;
+    if(event.message.text == 'get'){
+        message = service.select(event.source)
+    }else{
+        message = service.insert(event.message, event.source)
+    }
 
     return botClient.replyMessage(
         event.replyToken,
-        await service.hoge(event.message, event.source)
+        await message
     );
 }
 
 export default app;
-
