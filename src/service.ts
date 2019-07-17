@@ -12,13 +12,11 @@ export default class Service {
             altText: '',
             template: {
                 type: 'buttons',
-                thumbnailImageUrl: 'https://placehold.jp/3d4070/ffffff/240x240.jpg?text=TEST',
-                title: 'ボタンテンプレートのテスト',
                 text: 'ボタンテンプレートのテスト本文',
                 actions: [
                     {
                         "type": "message",
-                        "label": "Buy",
+                        "label": "get",
                         "text": "get"
                     }
                 ]
