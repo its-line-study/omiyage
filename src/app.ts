@@ -57,16 +57,18 @@ async function handleEvent(event: WebhookEvent): Promise<any> {
      * TODO DBアクセスは別ファイルに分けたい
      * TODO ロジック
      */
-    var message: Promise<Message>;
-    if(event.message.text == 'get'){
-        message = service.select(event.source)
-    }else{
-        message = service.insert(event.message, event.source)
+    var message: Message;
+    if (event.message.text == 'get'){
+        message = await service.select(event.source)
+    } else if (event.message.text == 'button'){
+        message = service.buttonTemplate()
+    } else {
+        message = await service.insert(event.message, event.source)
     }
 
     return botClient.replyMessage(
         event.replyToken,
-        await message
+        message
     );
 }
 
