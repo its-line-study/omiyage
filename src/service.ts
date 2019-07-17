@@ -10,7 +10,7 @@ export default class Service {
         const result = await query(`SELECT name FROM omiyage WHERE registered_user_id = '${source.userId}';`);
         return {
             type: 'text',
-            text: result.rows.join('\n')
+            text: result.rows.map((row) => row.name).join('\n')
         }
     }
     async insert(message: TextEventMessage, source: EventSource): Promise<Message> {
