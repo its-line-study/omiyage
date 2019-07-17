@@ -7,7 +7,7 @@ import query from './dbClient';
 
 export default class Service {
     async select(source: EventSource): Promise<Message> {
-        const result = await query(`SELECT name FROM omiyage WHERE registered_user_id = ${source.userId}`);
+        const result = await query(`SELECT name FROM omiyage WHERE registered_user_id = '${source.userId}';`);
         return {
             type: 'text',
             text: result.rows.join('\n')
