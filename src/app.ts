@@ -44,12 +44,19 @@ async function handleEvent(event: WebhookEvent): Promise<any> {
     }
 
     var message: Message;
-    if (event.message.text == 'get'){
-        message = await service.select(event.source)
-    } else if (event.message.text == 'button'){
-        message = service.buttonTemplate()
-    } else {
-        message = await service.insert(event.message, event.source)
+    switch(event.message.text){
+        case 'get':
+            message = await service.select(event.source)
+            break;
+        case 'button':
+            message = service.buttonTemplate()
+            break;
+        case 'carousel':
+            message = service.carouselTemplate()
+            break;
+        default:
+            message = await service.insert(event.message, event.source)
+            break;
     }
 
     return botClient.replyMessage(

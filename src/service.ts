@@ -7,6 +7,47 @@ import {
 import query from './dbClient';
 
 export default class Service {
+    carouselTemplate(): TemplateMessage {
+        return {
+            type: 'template',
+            altText: 'test',
+            template: {
+                type: 'carousel',
+                columns: [
+                    {
+                        text: 'カルーセル1',
+                        actions: [
+                            {
+                                "type": "message",
+                                "label": "get",
+                                "text": "get"
+                            }
+                        ]
+                    },
+                    {
+                        text: 'カルーセル2',
+                        actions: [
+                            {
+                                "type": "message",
+                                "label": "button",
+                                "text": "button"
+                            }
+                        ]
+                    },
+                    {
+                        text: 'カルーセル3',
+                        actions: [
+                            {
+                                "type": "message",
+                                "label": "carousel",
+                                "text": "carousel"
+                            }
+                        ]
+                    }
+                ]
+            }
+        };
+    }
     buttonTemplate(): TemplateMessage {
         return {
             type: 'template',
