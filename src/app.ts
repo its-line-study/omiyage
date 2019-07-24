@@ -8,8 +8,6 @@ import {
 } from '@line/bot-sdk';
 import Express, { Request, Response } from 'express';
 import Service from './service';
-import pg from 'pg';
-const databaseInfo = {connectionString: process.env.DATABASE_URL, ssh: true}
 
 const clientConfig: ClientConfig = {
     channelAccessToken: process.env.LINE_CHANNEL_ACCESS_TOKEN || '',
@@ -26,11 +24,6 @@ const app = Express();
 const service = new Service();
 
 app.get('/', async (request: Request, response: Response) => {
-    const client = new pg.Client(databaseInfo);
-    client.connect();
-    const res = await client.query('SELECT * from test;');
-    console.log(res.rows);
-    client.end();
     return response.status(200).send({text: 'Hello world.'});
 });
 
@@ -50,13 +43,6 @@ async function handleEvent(event: WebhookEvent): Promise<any> {
         return Promise.resolve(null);
     }
 
-    // const message = event.message.text === '1' ? 'A' : 'B';
-
-    /**
-     * TODO イベントの判定を別に
-     * TODO DBアクセスは別ファイルに分けたい
-     * TODO ロジック
-     */
     var message: Message;
     if (event.message.text == 'get'){
         message = await service.select(event.source)

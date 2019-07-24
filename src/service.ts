@@ -1,12 +1,13 @@
 import {
-    Message,
     TextEventMessage,
-    EventSource
+    EventSource,
+    TemplateMessage,
+    TextMessage
 } from '@line/bot-sdk'
 import query from './dbClient';
 
 export default class Service {
-    buttonTemplate(): Message {
+    buttonTemplate(): TemplateMessage {
         return {
             type: 'template',
             altText: '',
@@ -23,7 +24,7 @@ export default class Service {
             }
         };
     }
-    async select(source: EventSource): Promise<Message> {
+    async select(source: EventSource): Promise<TextMessage> {
         const result = await query(`SELECT name FROM omiyage WHERE registered_user_id = '${source.userId}';`);
         return {
             type: 'text',
@@ -31,7 +32,7 @@ export default class Service {
         }
     }
 
-    async insert(message: TextEventMessage, source: EventSource): Promise<Message> {
+    async insert(message: TextEventMessage, source: EventSource): Promise<TextMessage> {
         const result = await query(`INSERT INTO omiyage (name, registered_user_id) VALUES ('${message.text}', '${source.userId}');`);
         return {
             type: 'text',
