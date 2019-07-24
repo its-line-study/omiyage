@@ -10,7 +10,7 @@ export default class Service {
     buttonTemplate(): TemplateMessage {
         return {
             type: 'template',
-            altText: '',
+            altText: 'test',
             template: {
                 type: 'buttons',
                 text: 'ボタンテンプレートのテスト本文',
