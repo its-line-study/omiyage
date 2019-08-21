@@ -8,21 +8,27 @@ import query from './dbClient';
 
 export default class Service {
     profileMessages(profile: Profile): Message[]{
-        return [
-            {
+        var ret : Message[] = []
+        if(!profile.pictureUrl){
+            ret.push({
                 type: 'image',
                 previewImageUrl: profile.pictureUrl,
                 originalContentUrl: profile.pictureUrl
-            },
-            {
+            });
+        }
+        if(!profile.displayName){
+            ret.push({
                 type: 'text',
                 text: profile.displayName
-            },
-            {
+            });
+        }
+        if(!profile.statusMessage){
+            ret.push({
                 type: 'text',
                 text: profile.statusMessage
-            }
-        ]
+            });
+        }
+        return ret;
     }
     carouselTemplate(): Message {
         return {
