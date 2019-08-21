@@ -43,7 +43,7 @@ async function handleEvent(event: WebhookEvent): Promise<any> {
         return Promise.resolve(null);
     }
 
-    var message: Message;
+    var message: Message | Message[];
     switch(event.message.text){
         case 'get':
             message = await service.select(event.source)
@@ -53,6 +53,18 @@ async function handleEvent(event: WebhookEvent): Promise<any> {
             break;
         case 'carousel':
             message = service.carouselTemplate()
+            break;
+        case 'profile':
+            if(event.source.userId!=='string'){
+                message = {
+                    type: 'text',
+                    text: '不明ユーザー'
+                }
+            }else{
+                message = service.profileMessages(
+                    await botClient.getProfile(event.source.userId)
+                );
+            }
             break;
         default:
             message = await service.insert(event.message, event.source)

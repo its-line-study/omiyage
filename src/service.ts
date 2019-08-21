@@ -1,13 +1,30 @@
 import {
+    Profile,
     TextEventMessage,
     EventSource,
-    TemplateMessage,
-    TextMessage
+    Message
 } from '@line/bot-sdk'
 import query from './dbClient';
 
 export default class Service {
-    carouselTemplate(): TemplateMessage {
+    profileMessages(profile: Profile): Message[]{
+        return [
+            {
+                type: 'image',
+                previewImageUrl: profile.pictureUrl,
+                originalContentUrl: profile.pictureUrl
+            },
+            {
+                type: 'text',
+                text: profile.displayName
+            },
+            {
+                type: 'text',
+                text: profile.statusMessage
+            }
+        ]
+    }
+    carouselTemplate(): Message {
         return {
             type: 'template',
             altText: 'test',
@@ -48,7 +65,7 @@ export default class Service {
             }
         };
     }
-    buttonTemplate(): TemplateMessage {
+    buttonTemplate(): Message {
         return {
             type: 'template',
             altText: 'test',
@@ -65,15 +82,14 @@ export default class Service {
             }
         };
     }
-    async select(source: EventSource): Promise<TextMessage> {
+    async select(source: EventSource): Promise<Message> {
         const result = await query(`SELECT name FROM omiyage WHERE registered_user_id = '${source.userId}';`);
         return {
             type: 'text',
             text: result.rows.map((row) => row.name).join('\n')
         }
     }
-
-    async insert(message: TextEventMessage, source: EventSource): Promise<TextMessage> {
+    async insert(message: TextEventMessage, source: EventSource): Promise<Message> {
         const result = await query(`INSERT INTO omiyage (name, registered_user_id) VALUES ('${message.text}', '${source.userId}');`);
         return {
             type: 'text',
