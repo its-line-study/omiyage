@@ -55,7 +55,7 @@ async function handleEvent(event: WebhookEvent): Promise<any> {
             message = service.carouselTemplate()
             break;
         case 'profile':
-            if(event.source.userId!=='string'){
+            if(!event.source.userId){
                 message = {
                     type: 'text',
                     text: '不明ユーザー'
