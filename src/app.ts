@@ -71,6 +71,7 @@ async function handleEvent(event: WebhookEvent): Promise<any> {
             break;
     }
 
+    console.log(message);
     return botClient.replyMessage(
         event.replyToken,
         message
